@@ -1,0 +1,85 @@
+@import url(http://fonts.googleapis.com/css?family=Exo:100,200,400);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
+
+
+div[ng-app] { 
+  margin: auto; 
+  width:100%;
+}
+
+.input-group {
+  margin:auto;
+  width: 50%;
+  margin-top:200px;
+}
+
+.input-group-addon {
+  background-color : transparent;
+}
+
+table a,table a:hover,table a:focus {
+  color : white;
+}
+
+.pagination {
+  display: table;
+  margin: 16px auto;
+}
+
+.table {
+  margin:auto;
+  width: 50%;
+  margin-top:10px;
+
+}
+
+.buttonRow {
+  margin:auto;
+  width: 50%;
+  padding-top:10px;
+}
+
+
+form[editable-form] > div {
+  margin: 10px 0;
+}
+
+
+.body{
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -40px;
+    bottom: -40px;
+    width: auto;
+    height: auto;
+    background-image: url(http://wallpapercave.com/wp/dDEq6M5.jpg);
+    background-size: cover;
+    -webkit-filter: blur(5px);
+    z-index: -2;
+}
+
+body{
+    font-family: 'Exo', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color:white;
+}
+
+.grad{
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -40px;
+    bottom: -40px;
+    width: auto;
+    height: auto;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+    z-index: -1;
+    opacity: 0.7;
+}
+
+.table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65)));
+     
+}

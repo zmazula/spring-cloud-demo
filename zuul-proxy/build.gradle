@@ -1,0 +1,66 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('se.transmode.gradle:gradle-docker:1.2')
+
+	}
+}
+
+group= 'epam'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+apply plugin: 'docker'
+
+task buildDocker(type: Docker, dependsOn: build) {
+	push = false
+	applicationName = jar.baseName
+	dockerfile = file('src/main/docker/Dockerfile')
+	doFirst {
+		copy {
+			from jar
+			into stageDir
+		}
+	}
+}
+
+jar {
+	baseName = 'zuul-proxy'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.security:spring-security-web')
+	compile('org.springframework.security:spring-security-config')
+	compile('org.springframework.cloud:spring-cloud-starter-config')
+	compile('org.springframework.cloud:spring-cloud-starter-eureka')
+	compile('org.springframework.cloud:spring-cloud-starter-zuul')
+	compile('net.logstash.logback:logstash-logback-encoder:4.6')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	runtime('org.apache.tomcat.embed:tomcat-embed-jasper')
+	runtime('javax.servlet:javax.servlet-api')
+	runtime('javax.servlet:jstl')
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.SR1"
+	}
+}

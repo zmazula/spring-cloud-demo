@@ -1,0 +1,96 @@
+version: '2'
+services:
+  elk:
+    container_name: elk
+    build: ./elk
+    ports:
+     - "5601:80"
+     - "9200:9200"
+     - "5000:5000/udp"
+  cassandra:
+    container_name: cassandra
+    build: ./cassandra
+  configserver:
+    container_name: configserver
+    image: epam/configserver
+    volumes: 
+      - /Users/zmazula/work/local_git:/Users/zmazula/work/local_git
+    depends_on:
+      - elk
+    links:
+      - elk
+  eureka-server:
+    container_name: eureka-server
+    image: epam/eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - elk
+      - configserver
+    links:
+      - elk
+    entrypoint: ./wait-for-it.sh configserver:8080 -t 30 -- java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
+  midserver:
+    container_name: midserver
+    image: epam/midserver
+    links:
+      - configserver
+      - eureka-server
+      - cassandra
+      - elk
+    depends_on:
+      - configserver
+      - eureka-server
+      - cassandra
+      - elk
+    entrypoint: ./wait-for-it.sh eureka-server:8761 -t 30 -- java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
+  exporter-service:
+    container_name: exporter-service
+    image: epam/exporter-service
+    links:
+      - configserver
+      - eureka-server
+      - midserver
+      - elk
+    depends_on:
+      - configserver
+      - eureka-server
+      - midserver
+      - elk
+    entrypoint: ./wait-for-it.sh midserver:8000 -t 60 -- java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
+  auth-service:
+    container_name: auth-service
+    image: epam/auth-service
+    links:
+      - configserver
+      - eureka-server
+      - cassandra
+      - elk
+    depends_on:
+      - configserver
+      - eureka-server
+      - cassandra
+      - midserver
+      - elk
+    entrypoint: ./wait-for-it.sh midserver:8000 -t 60 -- java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
+  zuul-proxy:
+    container_name: zuul-proxy
+    image: epam/zuul-proxy
+    ports:
+      - "80:8081"
+    links:
+      - configserver
+      - eureka-server
+      - midserver
+      - auth-service
+      - elk
+    depends_on:
+      - configserver
+      - eureka-server
+      - midserver
+      - auth-service
+      - elk
+    entrypoint: ./wait-for-it.sh midserver:8000 -t 60 -- java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
+  
+
+  
