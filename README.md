@@ -1,2 +1,2 @@
 # spring-cloud-demo
-Demo project for some spring cloud microservices
+Demo project for spring cloud
