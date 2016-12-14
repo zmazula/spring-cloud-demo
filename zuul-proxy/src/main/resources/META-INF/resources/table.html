@@ -25,6 +25,11 @@
 <div class="grad"></div>
 <div ng-app="app" ng-controller="Ctrl">
 
+  <div style="text-align: right;padding: 10px;">
+    <p>Welcome {{ldapAttributes.displayName[0]}}!</p>
+
+    <button ng-click="open(ldapAttributes)" class="btn btn-default">My profile</button>
+  </div>
 
   <form>
     <div class="form-group">

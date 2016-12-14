@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h3 class="modal-title">LDAP attributes</h3>
+</div>
+<div class="modal-body">
+    <p><u>E-mail</u> : {{title1.mail[0]}}</p>
+    <p><u>Position</u> : {{title1.title[0]}}</p>
+    <p><u>Location</u> : {{title1.physicalDeliveryOfficeName[0]}}</p>
+    <p><u>Roles</u> : {{title1.memberOf}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button"
+            ng-click="close()">Cancel</button>
+</div>

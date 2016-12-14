@@ -1,3 +1,4 @@
+
 var app = angular.module("app", ["xeditable", "ngResource","ui.bootstrap"]);
 
 app.run(function(editableOptions) {
@@ -12,7 +13,15 @@ app.factory("MidBean", function ($resource) {
     });
 });
 
-app.controller('Ctrl', function($scope, $filter, filterFilter, $http, MidBean, filterFilter) {
+
+app.controller('PopupCont', function ($scope, $modalInstance, titlename2) {
+    $scope.title1 = titlename2;
+    $scope.close = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+app.controller('Ctrl', function($scope, $filter,$modal, filterFilter, $http, MidBean, filterFilter,$modal) {
 
   $scope.sortType     = 'customerName';
   $scope.sortReverse  = false;
@@ -22,13 +31,33 @@ app.controller('Ctrl', function($scope, $filter, filterFilter, $http, MidBean, f
   $scope.currentPage = 1;
   $scope.numPerPage = 5;
   $scope.maxSize = 5;
+  $scope.ldapAttributes;
 
   $scope.mids = MidBean.query(function(u, getResponseHeaders){
     $scope.filteredMids = filterFilter($scope.mids, {name: $scope.mids.midId});
 	$scope.totalItems = $scope.filteredMids.length;
   });
 
-  $scope.checkName = function(data, id) {
+  $http.get('/attributes').then(function(response) {
+      $scope.ldapAttributes = response.data;
+  });
+
+    $scope.open = function (titlename) {
+        var modalInstance = $modal.open({
+            templateUrl: 'Popup.html',
+            controller: 'PopupCont',
+            resolve: {
+                titlename2: function () {
+                    return titlename;
+                }
+            }
+        });
+        }
+
+
+
+
+    $scope.checkName = function(data, id) {
     if ( data == '') {
       return "Required field!";
     }
@@ -114,3 +143,5 @@ app.controller('Ctrl', function($scope, $filter, filterFilter, $http, MidBean, f
 
 
 });
+
+
