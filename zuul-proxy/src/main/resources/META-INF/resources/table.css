@@ -93,3 +93,14 @@ body{
     background-color: #428bca;
     border-color: #428bca;
 }
+
+.logoutlink {
+    text-decoration: none;
+    color:white;
+    padding-top: 6px;
+}
+
+.welcome {
+    text-align: right;
+    padding: 10px;
+}

@@ -178,10 +178,9 @@ body{
 		</div>
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
-  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>¶
+  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
 </form>
 
-  
 </body>
 </html>
